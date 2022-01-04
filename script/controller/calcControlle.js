@@ -18,6 +18,37 @@ class CalcController {
     //dir(); vê o HTML como JS no console
     //window; vê tudo que tem relação com o navegador no console
     //innerHTML = Insere informação no formato HTML 
+
+    copyToClipboard (){
+        let input = document.createElement ('input');
+
+        input.value = this.displayCalc;
+
+        document.body.appendChild (input);
+
+        input.select();
+
+        document.execCommand("copy");
+
+        input.remove();
+    }
+
+    pasteFronClickboard(){
+        document.addEventListener('paste' , e=> {
+
+           let text =  e.clipboardData.getData('Text')
+
+           this.displayCalc = parseFloat(text);
+
+
+        });
+
+
+
+    }
+
+
+
     initialize() {
 
         this.setDisplayDateTime()
@@ -28,6 +59,7 @@ class CalcController {
         }, 1000)
 
         this.setLastNumberToDisplay();
+        this.pasteFronClickboard();
 
     }
 
@@ -74,6 +106,9 @@ class CalcController {
                 case '8':
                 case '9':
                     this.addOperation(parseInt(e.key));
+                    break;
+                case  'C':
+                    if(e.ctrlKey) this.copyToClipboard();
                     break;
     
            
