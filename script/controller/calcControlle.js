@@ -6,6 +6,7 @@ class CalcController {
         this._audioOnOff = false;
         this._lastOperato = '';
         this._lastNumber = '';
+
         this._operation = [];
         this._locale = 'pt-BR'
         this._displayCalcEl = document.querySelector("#display");
@@ -402,10 +403,19 @@ class CalcController {
     }
 
     setDisplayDateTime() {
-        this.displayDate = this.currentDate.toLocaleDateString(this._locale);
+
+
+
+        this.displayDate = this.currentDate.toLocaleDateString(this._locale,{
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        });
         this.displayTime = this.currentDate.toLocaleTimeString(this._locale);
     }
 
+
+    
 
     get displayTime() {
         return this._timeEl.innerHTML;
@@ -427,7 +437,12 @@ class CalcController {
         return this._displayCalcEl.innerHTML;
     }
     set displayCalc(value) {
+        if(value.toString().length > 10){
+            this.setError();
+            return false;
+        }
         this._displayCalcEl.innerHTML = value;
+
     }
     get currentDate() {
         return new Date();
